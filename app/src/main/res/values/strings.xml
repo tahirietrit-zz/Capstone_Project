@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">iReport</string>
+    <string name="feed_button">Feed</string>
+    <string name="create_button">Create</string>
+    <string name="profile_button">Profile</string>
+
+    <!-- Content descriptions-->
+    <string name="feed_button_desc">Button that shows main fragment</string>
+    <string name="create_button_desc">Button that shows create fragment</string>
+    <string name="profile_button_desc">Button that shows profile fragment</string>
+    <string name="main_fragment_holder">Holder for feed, create and profile fragments</string>
+    <string name="report_item_thumbnail">Thumbnail image of the report item</string>
+    <string name="report_item_title">Title of the report item</string>
+    <string name="report_item_author">Author of the report item</string>
 </resources>
