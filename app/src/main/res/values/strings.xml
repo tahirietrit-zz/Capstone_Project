@@ -4,6 +4,8 @@
     <string name="create_button">Create</string>
     <string name="profile_button">Profile</string>
 
+    <string name="facebook_app_id">1048768205205984</string>
+
     <!-- Content descriptions-->
     <string name="feed_button_desc">Button that shows main fragment</string>
     <string name="create_button_desc">Button that shows create fragment</string>

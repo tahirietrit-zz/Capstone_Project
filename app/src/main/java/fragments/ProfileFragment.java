@@ -16,30 +16,29 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by macb on 12/04/16.
+ * Created by macb on 11/05/16.
  */
-public class FeedFragment extends Fragment {
-    @Bind(R.id.feed_recyclerview)
-    RecyclerView feedRecyclerview;
+public class ProfileFragment extends Fragment {
+    @Bind(R.id.profile_recyclerview)
+    RecyclerView profileRecyclerview;
 
     private RecyclerView.LayoutManager mLayoutManager;
     FeedAdapter feedAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.feed_fragment_layout ,container, false);
+        return inflater.inflate(R.layout.profile_layout ,container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        System.out.println("on View created");
-        feedRecyclerview.setHasFixedSize(true);
+        profileRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        feedRecyclerview.setLayoutManager(mLayoutManager);
+        profileRecyclerview.setLayoutManager(mLayoutManager);
 
         feedAdapter = new FeedAdapter(getActivity());
-        feedRecyclerview.setAdapter(feedAdapter);
+        profileRecyclerview.setAdapter(feedAdapter);
     }
 }

@@ -1,16 +1,16 @@
 package com.tahirietrit.ireport;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import fragments.FeedFragment;
+import fragments.ProfileFragment;
 
-public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.fragmentContainer)
-    RelativeLayout fragmentContainer;
+public class MainActivity extends FragmentActivity {
     @Bind(R.id.feed_button)
     Button feedButton;
     @Bind(R.id.profile_button)
@@ -20,5 +20,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        if(savedInstanceState == null){
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, new FeedFragment())
+                    .commit();
+        }
+    }
+    @OnClick(R.id.profile_button)
+    void openProfileFragment(){
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .commit();
     }
 }
