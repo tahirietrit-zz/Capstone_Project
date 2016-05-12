@@ -3,11 +3,13 @@ package com.tahirietrit.ireport;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,10 +70,11 @@ public class CreateReportActivity extends Activity {
         if(doesHaveCameraPermission() && doesHaveReadStoragePermission() && doesHaveWriteStoragePermission()) {
             cameraClass = new CameraClass(surfaceView, this);
         }else{
-
-            requestPermissions(new String[]{
-                            Manifest.permission.READ_CONTACTS,
-                            Manifest.permission.ACCESS_FINE_LOCATION},
+            System.out.println("else");
+            ActivityCompat.requestPermissions(CreateReportActivity.this,new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA},
                     MULTIPLE_PERMISSIONS);
         }
         IReport application = (IReport) getApplication();
@@ -83,7 +86,11 @@ public class CreateReportActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        cameraClass.onResume();
+        try {
+            cameraClass.onResume();
+        }catch (Exception e){
+
+        }
         mTracker.setScreenName("Create Activity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
@@ -92,7 +99,11 @@ public class CreateReportActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        cameraClass.onPause();
+        try {
+            cameraClass.onPause();
+        }catch (Exception e){
+
+        }
     }
 
     @OnClick(R.id.button_capture)
@@ -145,6 +156,8 @@ public class CreateReportActivity extends Activity {
                     finish();
                 }
             });
+            ProgressDialog progress = ProgressDialog.show(this, "iReport",
+                    "Uploading report", true);
         } else {
             Toast.makeText(getApplicationContext(), "Please write your report than try again", Toast.LENGTH_SHORT).show();
         }
@@ -158,7 +171,7 @@ public class CreateReportActivity extends Activity {
         return result == PackageManager.PERMISSION_GRANTED;
     }
     private boolean doesHaveReadStoragePermission(){
-        int result = getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.CAMERA);
+        int result = getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         return result == PackageManager.PERMISSION_GRANTED;
     }
     @Override
@@ -167,14 +180,12 @@ public class CreateReportActivity extends Activity {
         switch (requestCode) {
             case MULTIPLE_PERMISSIONS: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
+                if (grantResults.length > 2
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
+                    cameraClass = new CameraClass(surfaceView, this);
+                    onResume();
                 } else {
-
+                    finish();
                 }
                 return;
             }

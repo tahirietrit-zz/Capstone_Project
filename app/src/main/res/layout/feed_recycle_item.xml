@@ -20,7 +20,8 @@
             android:layout_marginBottom="20dp"
             android:text="fasdf"
             android:textColor="@android:color/white"
-            android:layout_marginStart="20dp"/>
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/publisher_name"/>
 
         <TextView
             android:id="@+id/report_title"
@@ -33,6 +34,7 @@
             android:layout_marginStart="20dp"
             android:layout_above="@+id/report_author"
             android:maxLines="1"
+            android:contentDescription="@string/report_tittle"
             />
 
     </RelativeLayout>

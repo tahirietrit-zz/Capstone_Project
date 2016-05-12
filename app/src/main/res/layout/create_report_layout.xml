@@ -13,7 +13,8 @@
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/camera_textureview"/>
 
         <Button
             android:id="@+id/button_capture"
@@ -23,7 +24,8 @@
             android:layout_gravity="center"
             android:layout_below="@+id/surfaceView"
             android:layout_marginTop="10dp"
-            android:text="Capture" />
+            android:text="Capture"
+            android:contentDescription="@string/capture_button"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/compose_holder"
@@ -34,7 +36,8 @@
             android:id="@+id/captured_image"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/captured_image"/>
         <EditText
             android:id="@+id/report_text_compose"
             android:layout_width="fill_parent"
@@ -42,6 +45,7 @@
             android:hint="Write your report.."
             android:layout_below="@+id/captured_image"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/report_edittext"
             />
         <Button
             android:id="@+id/publish_button"
@@ -50,7 +54,8 @@
             android:text="Publish"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/report_text_compose"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/publish_button"/>
 
     </RelativeLayout>
 </RelativeLayout>

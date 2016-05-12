@@ -14,4 +14,14 @@
     <string name="report_item_thumbnail">Thumbnail image of the report item</string>
     <string name="report_item_title">Title of the report item</string>
     <string name="report_item_author">Author of the report item</string>
+    <string name="camera_textureview">Texture view to load camera preview</string>
+    <string name="capture_button">Button used for image capturing</string>
+    <string name="captured_image">ImageView to show captured image</string>
+    <string name="report_edittext">Edit text to type the report</string>
+    <string name="publish_button">Button used to initiate the uploading service</string>
+    <string name="publisher_name">Textview to show the name of the publisher</string>
+    <string name="report_tittle">Textview to show the title of the report</string>
+    <string name="fb_login_button">LoginButton for facebook login</string>
+    <string name="user_profile_pic">User profile picture</string>
+    <string name="user_name">User full name</string>
 </resources>
