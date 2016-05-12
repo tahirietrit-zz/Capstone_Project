@@ -10,6 +10,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#000"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/report_item_thumbnail"/>
         <TextView
             android:id="@+id/report_author"

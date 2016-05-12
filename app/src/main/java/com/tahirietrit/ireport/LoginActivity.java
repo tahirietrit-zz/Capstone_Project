@@ -11,14 +11,16 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import objects.UserToken;
 import requests.RequestCallBack;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import utils.AppPreferences;
 import utils.Utilitys;
 
@@ -30,7 +32,7 @@ public class LoginActivity extends Activity{
     private LoginButton loginButton;
     RequestCallBack reqCall;
     Retrofit retrofit;
-
+    private Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,24 +62,22 @@ public class LoginActivity extends Activity{
             public void onSuccess(LoginResult loginResult) {
                 Call<UserToken> authCall = reqCall.userToken(loginResult.getAccessToken().getToken(), "", "Android", "");
                 authCall.enqueue(new Callback<UserToken>() {
-                   @Override
-                    public void onResponse(Response<UserToken> response) {
+                    @Override
+                    public void onResponse(Call<UserToken> call, Response<UserToken> response) {
+                        if (response.body() != null) {
+                            System.out.println(response.body().getToken());
+                            AppPreferences.setAccessToken(response.body().getToken());
 
-                        if (response.code() == 200) {
-                            if (response.body() != null) {
-                                System.out.println(response.body().getToken());
-                                AppPreferences.setAccessToken(response.body().getToken());
-
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
                         }
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<UserToken> call, Throwable t) {
+
                     }
                 });
 
@@ -91,10 +91,20 @@ public class LoginActivity extends Activity{
             public void onError(FacebookException exception) {
             }
         });
+        IReport application = (IReport) getApplication();
+        mTracker = application.getDefaultTracker();
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTracker.setScreenName("Login Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

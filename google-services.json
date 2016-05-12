@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "136324039422",
+    "project_id": "ireport-98f5f"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136324039422:android:3251db19a848d022",
+        "android_client_info": {
+          "package_name": "com.tahirietrit.ireport"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo6ueswBn3QeDt9LM5c9HdMePd1Lc2szk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-74631547-2"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

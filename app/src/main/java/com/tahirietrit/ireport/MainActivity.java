@@ -1,5 +1,6 @@
 package com.tahirietrit.ireport;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
@@ -33,5 +34,19 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new ProfileFragment())
                     .commit();
+    }
+    @OnClick(R.id.feed_button)
+    void openFeedFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new FeedFragment())
+                .commit();
+    }
+
+
+    @OnClick(R.id.create_button)
+    void openCreateActivity(){
+        startActivity(new Intent(getApplicationContext(), CreateReportActivity.class));
+
+
     }
 }

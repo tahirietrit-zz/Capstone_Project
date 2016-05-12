@@ -18,17 +18,18 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import objects.Item;
+import objects.Article;
 
 /**
- * Created by macb on 04/05/16.
+ * Created by macb on 11/05/16.
  */
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
+public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
     private Context ctx;
-    public FeedAdapter(Context ctx){
+    public ProfileAdapter(Context ctx){
         this.ctx = ctx;
     }
-    public List<Item> articles = new ArrayList<Item>();
+    public List<Article> articles = new ArrayList<Article>();
+    String author = "";
     public class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.report_thumb)
         ImageView reportThumb;
@@ -43,18 +44,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     @Override
-    public FeedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                          int viewType) {
+    public ProfileAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.feed_recycle_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Picasso.with(ctx).load(articles.get(position).getImage()).into(holder.reportThumb);
-        holder.reportAuthor.setText(articles.get(position).getCreator().getName());
+        holder.reportAuthor.setText(author);
         holder.reportTitle.setText(articles.get(position).getDescription());
         holder.reportThumb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +74,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         return articles.size();
     }
 
-    public void setArticles(List<Item> articles){
+    public void setArticles(List<Article> articles, String author){
         this.articles = articles;
+        this.author = author;
         notifyDataSetChanged();
     }
 
