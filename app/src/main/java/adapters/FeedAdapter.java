@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -76,5 +77,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         this.articles = articles;
         notifyDataSetChanged();
     }
+
 
 }

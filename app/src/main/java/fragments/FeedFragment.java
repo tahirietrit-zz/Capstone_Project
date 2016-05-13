@@ -1,5 +1,6 @@
 package fragments;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,15 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.tahirietrit.ireport.IReport;
 import com.tahirietrit.ireport.R;
 
+import java.util.List;
+
 import adapters.FeedAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import objects.Item;
 import objects.MainFeed;
 import requests.RequestCallBack;
 import retrofit2.Call;
@@ -33,6 +38,8 @@ import utils.Utilitys;
 public class FeedFragment extends Fragment {
     @Bind(R.id.feed_recyclerview)
     RecyclerView feedRecyclerview;
+    @Bind(R.id.feed_progress_bar)
+    ProgressBar feedProgress;
 
     private RecyclerView.LayoutManager mLayoutManager;
     FeedAdapter feedAdapter;
@@ -51,6 +58,7 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        feedProgress.bringToFront();
         feedRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         feedRecyclerview.setLayoutManager(mLayoutManager);
@@ -76,6 +84,8 @@ public class FeedFragment extends Fragment {
             @Override
             public void onResponse(Call<MainFeed> call, Response<MainFeed> response) {
                 feedAdapter.setArticles(response.body().getItems());
+                feedProgress.setVisibility(View.GONE);
+                insertData(response.body().getItems());
             }
 
             @Override
@@ -85,6 +95,16 @@ public class FeedFragment extends Fragment {
         });
         mTracker.setScreenName("Feed Fragment");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+    public void insertData(List<Item> response) {
+        ContentValues[] content_values = new ContentValues[response.size()];
+        for (int i = 0; i < response.size(); i++) {
+            Item report = response.get(i);
+            content_values[i] = report.getContentValues();
+        }
+
+        int integer = getActivity().getContentResolver().bulkInsert(Item.BASE_CONTENT_URI, content_values);
+        System.out.println("PROVIDERU JONE 1 : " + integer);
     }
 
 

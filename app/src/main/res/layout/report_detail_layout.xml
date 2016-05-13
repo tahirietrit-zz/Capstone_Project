@@ -44,5 +44,11 @@
         android:textStyle="bold"
         android:contentDescription="@string/report_tittle"
         android:layout_marginTop="20dp"/>
-
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_progress_bar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </LinearLayout>

@@ -2,7 +2,9 @@ package com.tahirietrit.ireport;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -34,6 +36,8 @@ public class ReportDetailActivity extends Activity {
     TextView authorName;
     @Bind(R.id.report_content)
     TextView reportContent;
+    @Bind(R.id.detail_progress_bar)
+    ProgressBar detailProgressbar;
     int reportId;
 
    RequestCallBack reqCall;
@@ -60,6 +64,7 @@ public class ReportDetailActivity extends Activity {
                         .transform(new CircleTransform()).into(reporterImage);
                 authorName.setText(response.body().getCreator().getName());
                 reportContent.setText(response.body().getDescription());
+                detailProgressbar.setVisibility(View.GONE);
             }
 
             @Override

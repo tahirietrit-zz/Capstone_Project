@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -45,6 +46,8 @@ public class ProfileFragment extends Fragment {
     ImageView profileImage;
     @Bind(R.id.username_textview)
     TextView usernameTextView;
+    @Bind(R.id.profile_progress_bar)
+    ProgressBar profileProgresBar;
     private Tracker mTracker;
 
     @Nullable
@@ -77,6 +80,7 @@ public class ProfileFragment extends Fragment {
                     Picasso.with(getActivity()).load(response.body().getProfilePic()).transform(new CircleTransform()).into(profileImage);
                     usernameTextView.setText(response.body().getName());
                     profileAdapter.setArticles(response.body().getArticles(), response.body().getName());
+                    profileProgresBar.setVisibility(View.GONE);
                 }
             }
 

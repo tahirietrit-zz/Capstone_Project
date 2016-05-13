@@ -27,6 +27,11 @@ public class MainActivity extends FragmentActivity {
                     .add(R.id.fragment_container, new FeedFragment())
                     .commit();
         }
+        if (BuildConfig.DEBUG) {
+            System.out.println("Mode DEBUG");
+        }else{
+            System.out.println("Mode RELEASE");
+        }
     }
     @OnClick(R.id.profile_button)
     void openProfileFragment(){
