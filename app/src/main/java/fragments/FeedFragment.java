@@ -1,9 +1,12 @@
 package fragments;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +38,7 @@ import utils.Utilitys;
 /**
  * Created by macb on 12/04/16.
  */
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Item>> {
     @Bind(R.id.feed_recyclerview)
     RecyclerView feedRecyclerview;
     @Bind(R.id.feed_progress_bar)
@@ -47,7 +50,8 @@ public class FeedFragment extends Fragment {
     RequestCallBack reqCall;
     Retrofit retrofit;
     private Tracker mTracker;
-
+    MainFeed mainFeed;
+    Context ctx;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        ctx = getActivity();
         feedProgress.bringToFront();
         feedRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -83,9 +88,9 @@ public class FeedFragment extends Fragment {
         mainFeedCall.enqueue(new Callback<MainFeed>() {
             @Override
             public void onResponse(Call<MainFeed> call, Response<MainFeed> response) {
-                feedAdapter.setArticles(response.body().getItems());
-                feedProgress.setVisibility(View.GONE);
-                insertData(response.body().getItems());
+
+                mainFeed = response.body();
+                getActivity().getSupportLoaderManager().initLoader(1, null, FeedFragment.this).forceLoad();
             }
 
             @Override
@@ -104,9 +109,23 @@ public class FeedFragment extends Fragment {
         }
 
         int integer = getActivity().getContentResolver().bulkInsert(Item.BASE_CONTENT_URI, content_values);
-        System.out.println("PROVIDERU JONE 1 : " + integer);
     }
 
 
-    
+    @Override
+    public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
+        return new FeedLoader(ctx, mainFeed);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Item>> loader, List<Item> data) {
+                feedAdapter.setArticles(data);
+                feedProgress.setVisibility(View.GONE);
+                insertData(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Item>> loader) {
+
+    }
 }
