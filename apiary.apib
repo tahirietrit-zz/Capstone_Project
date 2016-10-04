@@ -1,0 +1,154 @@
+FORMAT: 1A
+HOST: https://owner-api.teslamotors.com/
+
+# Tesla API
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+# Group Authentication
+
+## Tokens [/oauth/token]
+
+### Get an Access Token [POST]
+Performs the login. Takes in an plain text email and password, matching the owner's login information for [https://my.teslamotors.com/user/login](https://my.teslamotors.com/user/login).
+
+Returns a `access_token` which is passed along as a header with all future requests to authenticate the user.
+
+You must provide the `Authorization: Bearer {access_token}` header in all other requests.
+
+The current client ID and secret are [available here](http://pastebin.com/fX6ejAHd)
+
+The Attributes should be added as x-www-for-urlencoded body
+
++ Attributes
+    + grant_type: `password` (string) - The type of oAuth grant. Always "password"
+    + client_id: `abc` (string) - The oAuth client ID
+    + client_secret: `123` (string) - The oAuth client secret
+    + email: `elon@teslamotors.com` (string) - The email for my.teslamotors.com
+    + password: `edisonsux` (string) - The password for my.teslamotors.com
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "access_token": "abc123",
+              "token_type": "bearer",
+              "expires_in": 7776000,
+              "created_at": 1457385291
+            }
+            
+            
+# Group Vehicles
+A logged in user can have multiple vehicles under their account. This resource is primarily responsible for listing the vehicles and the basic details about them.
+
+## Vehicle Collection [/api/1/vehicles]
+
+### List all Vehicles [GET]
+Retrieve a list of your owned vehicles (includes vehicles not yet shipped!)
+
++ Request
+    + Headers
+
+            Authorization: Bearer {access_token}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "response": [
+                {
+                  "id": 4123241513431212, - (id of the car)
+                  "vehicle_id": 143241231324, - (vehicle id which will be used in future requests)
+                  "vin": "4FADSFTQWER14231", - (tbd)
+                  "display_name": "MYTESLA", - (display name of the current car)
+                  "option_codes": "AFSD,EQWQ,EWQE,TWER,WREW, - (tbd)
+                  "color": null, - (color of the car)
+                  "tokens": [
+                    "abc123", - (tbd)
+                    "abc321"
+                  ],
+                  "state": "online",
+                  "id_s": "4123241513431212",
+                  "remote_start_enabled": true,
+                  "calendar_enabled": true,
+                  "notifications_enabled": true,
+                  "backseat_token": null,
+                  "backseat_token_updated_at": null
+                }
+              ],
+              "count": 1
+            }
+        
+## Mobile Access [GET /api/1/vehicles/{id}/mobile_enabled]
+Determines if mobile access to the vehicle is enabled.
++ Request
+    + Headers
+    
+            Authorization: Bearer {access_token}
++ Parameters
+    + id: `1` (number) - The id of the Vehicle.
++ Response 200 (application/json)
+    + Body
+    
+            {
+                "response": true - ()
+            }
+## Charge State [GET /api/1/vehicles/{id}/data_request/charge_state]
+Returns the state of charge in the battery.
++ Request
+
+    + Headers
+    
+            Authorization: Bearer {access_token}
++ Parameters
+    + id: `1` (number) - The id of the Vehicle.
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "response": {
+                "charging_state": "Disconnected", -(charge state of the car)
+                "charge_limit_soc": 90, - (current charge limit)
+                "charge_limit_soc_std": 90, - (standard charge limit)
+                "charge_limit_soc_min": 50, - (minimum of charging limit allowed)
+                "charge_limit_soc_max": 100, - (maximum of charging limit allowed)
+                "charge_to_max_range": false, - (is charging to max enabled)
+                "battery_heater_on": null, - (when hot or cold the car adusts the temp of the battery)
+                "not_enough_power_to_heat": null, - (tbd)
+                "max_range_charge_counter": 0,  - (counter of the maximum charges)
+                "fast_charger_present": null, - (is supercharger present)
+                "fast_charger_type": "<invalid>", - (type of the charger)
+                "battery_range": 212.55, - (tbd)
+                "est_battery_range": 128.99, - (estimated battery range based on the latest ride)
+                "ideal_battery_range": 170.04, - (ideal battery range)
+                "battery_level": 67, - (battery level in %)
+                "usable_battery_level": 67, - (battery available for use)
+                "battery_current": null,
+                "charge_energy_added": 1.78, - (the amount of the energy added in the last/current charge)
+                "charge_miles_added_rated": 7, - (miles added based on the consumption from the last ride)
+                "charge_miles_added_ideal": 5.5, - (ideal amout of the miles added)
+                "charger_voltage": null, - (voltage of the charger)
+                "charger_pilot_current": null,
+                "charger_actual_current": null,
+                "charger_power": null,
+                "time_to_full_charge": 0-(in minutes)
+                "trip_charging": null,
+                "charge_rate": 0,
+                "charge_port_door_open": null,
+                "motorized_charge_port": false,
+                "scheduled_charging_start_time": null,
+                "scheduled_charging_pending": false,
+                "user_charge_enable_request": null,
+                "charge_enable_request": true,
+                "eu_vehicle": true,
+                "charger_phases": null,
+                "charge_port_latch": "<invalid>",
+                "charge_current_request": 16,
+                "charge_current_request_max": 16,
+                "managed_charging_active": false,
+                "managed_charging_user_canceled": false,
+                "managed_charging_start_time": null
+              }
+            }
